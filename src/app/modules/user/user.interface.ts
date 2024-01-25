@@ -8,3 +8,8 @@ export interface IUser {
   age: number;
   profileImage?: string;
 }
+
+export interface ILogin {
+  email: string;
+  password: string;
+}
