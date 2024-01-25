@@ -67,10 +67,28 @@ const deleteMultipleProducts = catchAsync(async (req, res) => {
   });
 });
 
+// update single product by id
+const updateSingleProduct = catchAsync(async (req, res) => {
+  const { productId } = req.params;
+
+  const result = await ProductServices.updateSingleProductIntoDB(
+    productId,
+    req.body,
+  );
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Product updated successfully",
+    data: result,
+  });
+});
+
 export const ProductController = {
   createProduct,
   getAllProducts,
   getSingleProduct,
   deleteSingleProduct,
   deleteMultipleProducts,
+  updateSingleProduct,
 };

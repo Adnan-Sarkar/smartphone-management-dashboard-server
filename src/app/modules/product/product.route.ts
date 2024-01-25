@@ -18,6 +18,13 @@ router.get("/:productId", ProductController.getSingleProduct);
 // delete single product by id
 router.delete("/:productId", ProductController.deleteSingleProduct);
 
+// update single product by id
+router.patch(
+  "/:productId",
+  validateRequest(ProductValidations.updateProductValidationSchema),
+  ProductController.updateSingleProduct,
+);
+
 // delete multiple products
 router.delete("/", ProductController.deleteMultipleProducts);
 
