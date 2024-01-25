@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 import { IProduct } from "./product.interface";
-import { OperatingSystems, RAM, Storage } from "./product.constant";
+import { OperatingSystems, Storage } from "./product.constant";
 
 // create product schema
 const prodyctSchema = new Schema<IProduct>({
@@ -40,9 +40,16 @@ const prodyctSchema = new Schema<IProduct>({
     required: [true, "Product model name is required"],
   },
   storage: {
-    type: String,
-    enum: Storage,
-    required: [true, "Product storage size is required"],
+    ROM: {
+      type: String,
+      enum: Storage,
+      required: [true, "Product ROM size is required"],
+    },
+    RAM: {
+      type: String,
+      enum: Storage,
+      required: [true, "Product ROM size is required"],
+    },
   },
   screenSize: {
     type: String,
@@ -54,25 +61,29 @@ const prodyctSchema = new Schema<IProduct>({
     required: [true, "Product battery size is required"],
     trim: true,
   },
-  frontCamera: {
-    type: String,
-    required: [true, "Product front camera is required"],
-    trim: true,
-  },
-  backCamera: {
-    type: String,
-    required: [true, "Product back camera is required"],
-    trim: true,
+  camera: {
+    front: {
+      type: String,
+      required: [true, "Product front camera is required"],
+      trim: true,
+    },
+    back: {
+      type: String,
+      required: [true, "Product back camera is required"],
+      trim: true,
+    },
   },
   processor: {
-    type: String,
-    required: [true, "Product processor name is required"],
-    trim: true,
-  },
-  ram: {
-    type: String,
-    enum: RAM,
-    required: [true, "Product RAM size is required"],
+    type: {
+      type: String,
+      required: [true, "Processor type is required"],
+      trim: true,
+    },
+    speed: {
+      type: String,
+      required: [true, "Processor speed is required"],
+      trim: true,
+    },
   },
   rating: {
     type: Number,

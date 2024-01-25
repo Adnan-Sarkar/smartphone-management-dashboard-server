@@ -6,22 +6,29 @@ export interface IProduct {
   brand: string;
   model: string;
   operatingSystem: "iOS" | "Android";
-  storage:
-    | "2GB"
-    | "4GB"
-    | "8GB"
-    | "16GB"
-    | "32GB"
-    | "64GB"
-    | "128GB"
-    | "256GB"
-    | "1TB";
+  storage: {
+    ROM:
+      | "2GB"
+      | "4GB"
+      | "8GB"
+      | "16GB"
+      | "32GB"
+      | "64GB"
+      | "128GB"
+      | "256GB"
+      | "1TB";
+    RAM: "2GB" | "4GB" | "8GB" | "16GB" | "32GB" | "64GB" | "128GB" | "256GB";
+  };
   screenSize: string;
   battery: string;
-  frontCamera: string;
-  backCamera: string;
-  processor: string;
-  ram: "2GB" | "4GB" | "8GB" | "16GB" | "32GB" | "64GB" | "128GB" | "256GB";
+  camera: {
+    front: string;
+    back: string;
+  };
+  processor: {
+    type: string;
+    speed: string;
+  };
   rating: number;
   colors: string[];
   chargingType: string;
