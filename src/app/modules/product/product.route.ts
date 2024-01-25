@@ -18,6 +18,9 @@ router.get("/:productId", ProductController.getSingleProduct);
 // delete single product by id
 router.delete("/:productId", ProductController.deleteSingleProduct);
 
+// delete multiple products
+router.delete("/", ProductController.deleteMultipleProducts);
+
 // get all products
 router.get("/", ProductController.getAllProducts);
 

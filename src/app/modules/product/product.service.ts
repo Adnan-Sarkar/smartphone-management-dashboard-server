@@ -34,9 +34,22 @@ const deleteSingleProductFromDB = async (id: string) => {
   return result;
 };
 
+// delete multiple products
+const deleteMultipleProductsFromDB = async (payload: { idList: string[] }) => {
+  const idList = payload.idList;
+  const result = Product.deleteMany({
+    _id: {
+      $in: idList,
+    },
+  });
+
+  return result;
+};
+
 export const ProductServices = {
   createProductIntoDB,
   getAllProductsFromDB,
   getSingleProductFromDB,
   deleteSingleProductFromDB,
+  deleteMultipleProductsFromDB,
 };
