@@ -6,13 +6,22 @@ export interface IProduct {
   brand: string;
   model: string;
   operatingSystem: "iOS" | "Android";
-  storage: string;
+  storage:
+    | "2GB"
+    | "4GB"
+    | "8GB"
+    | "16GB"
+    | "32GB"
+    | "64GB"
+    | "128GB"
+    | "256GB"
+    | "1TB";
   screenSize: string;
   battery: string;
   frontCamera: string;
   backCamera: string;
   processor: string;
-  ram: 2 | 4 | 8 | 16 | 32 | 64 | 128 | 256;
+  ram: "2GB" | "4GB" | "8GB" | "16GB" | "32GB" | "64GB" | "128GB" | "256GB";
   rating: number;
   colors: string[];
   chargingType: string;
