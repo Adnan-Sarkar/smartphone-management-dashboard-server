@@ -1,7 +1,8 @@
 import config from "../../config";
-import { IUser } from "./user.interface";
+import { ILogin, IUser } from "./user.interface";
 import User from "./user.model";
 import bcrypt from "bcrypt";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 // create an user
 const createUser = async (payload: IUser) => {
@@ -18,6 +19,43 @@ const createUser = async (payload: IUser) => {
   return result;
 };
 
+// login user
+const login = async (payload: ILogin) => {
+  const { email, password } = payload;
+
+  // check wherer user is exists
+  const user = await User.findOne({
+    email,
+  });
+
+  if (!user) {
+    throw Error("No user found!");
+  }
+
+  // compare password is correct or not
+  const isPasswordValid = await bcrypt.compare(password, user?.password);
+
+  if (!isPasswordValid) {
+    throw Error("Password is incorrect!");
+  }
+
+  // create JWT access token
+  const jwtPayload: JwtPayload = {
+    email: user?.email,
+    userName: user?.userName,
+  };
+
+  const token = jwt.sign(jwtPayload, config.jwt_access_token_secret as string, {
+    expiresIn: config.jwt_access_token_expires_in as string,
+  });
+
+  return {
+    user,
+    token,
+  };
+};
+
 export const UserServices = {
   createUser,
+  login,
 };
