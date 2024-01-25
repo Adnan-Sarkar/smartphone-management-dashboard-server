@@ -15,6 +15,9 @@ router.post(
 // get single product by id
 router.get("/:productId", ProductController.getSingleProduct);
 
+// delete single product by id
+router.delete("/:productId", ProductController.deleteSingleProduct);
+
 // get all products
 router.get("/", ProductController.getAllProducts);
 
