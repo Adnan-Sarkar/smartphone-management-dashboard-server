@@ -28,4 +28,5 @@ export interface IProduct {
   weight: string;
   details: string;
   discount: boolean;
+  productImage: string;
 }
