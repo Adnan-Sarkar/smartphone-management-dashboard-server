@@ -12,6 +12,9 @@ router.post(
   ProductController.createProduct,
 );
 
+// get single product by id
+router.get("/:productId", ProductController.getSingleProduct);
+
 // get all products
 router.get("/", ProductController.getAllProducts);
 
