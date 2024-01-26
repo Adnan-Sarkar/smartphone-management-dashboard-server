@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { ISales } from "./sales.validation";
+import { ISales } from "./sales.interface";
 
 // create sales schema
 const salesSchema = new Schema<ISales>(
