@@ -9,8 +9,153 @@ const createProductIntoDB = async (payload: IProduct) => {
 };
 
 // get all products
-const getAllProductsFromDB = async () => {
-  const result = await Product.find();
+const getAllProductsFromDB = async (query: Record<string, unknown>) => {
+  // filter object
+  const filterObj: Record<string, unknown> = {};
+
+  // filtering by price range
+  const price = query?.price;
+  if (price) {
+    const [min, max] = (price as string).split(",");
+    filterObj.price = {
+      $gte: Number(min),
+      $lte: Number(max),
+    };
+  }
+
+  // filtering by release date range
+  const releaseDateRange = query?.releaseDate;
+  if (releaseDateRange) {
+    const [startDate, endDate] = (releaseDateRange as string).split(",");
+    filterObj.releaseDate = {
+      $gte: startDate,
+      $lte: endDate,
+    };
+  }
+
+  // filtering by brand
+  const brand = query?.brand;
+  if (brand) {
+    filterObj.brand = {
+      $eq: brand,
+    };
+  }
+
+  // filtering by model
+  const model = query?.model;
+  if (model) {
+    filterObj.model = {
+      $eq: model,
+    };
+  }
+
+  // filtering by operating system
+  const operatingSystem = query?.operatingSystem;
+  if (operatingSystem) {
+    filterObj.operatingSystem = {
+      $eq: operatingSystem,
+    };
+  }
+
+  // filtering by storage
+  const rom = query?.rom;
+  const ram = query?.ram;
+
+  if (rom) {
+    filterObj["storage.ROM"] = {
+      $eq: rom,
+    };
+  }
+
+  if (ram) {
+    filterObj["storage.RAM"] = {
+      $eq: ram,
+    };
+  }
+
+  // filtering by screen size
+  const screenSize = query?.screenSize;
+  if (screenSize) {
+    filterObj.screenSize = {
+      $eq: screenSize,
+    };
+  }
+
+  // filtering by camera
+  const frontCamera = query?.frontCamera;
+  const backCamera = query?.backCamera;
+
+  if (frontCamera) {
+    filterObj["camera.front"] = {
+      $eq: frontCamera,
+    };
+  }
+
+  if (backCamera) {
+    filterObj["camera.back"] = {
+      $eq: backCamera,
+    };
+  }
+
+  // filtering by battery
+  const battery = query?.battery;
+  if (battery) {
+    filterObj.battery = {
+      $eq: battery,
+    };
+  }
+
+  // filtering by colors
+  const colors = query?.colors;
+  if (colors) {
+    const colorsArray = (colors as string).split(",");
+
+    filterObj.colors = {
+      $in: colorsArray,
+    };
+  }
+
+  // filtering by processor
+  const processorType = query?.processorType;
+  const processorSpeed = query?.processorSpeed;
+
+  if (processorType) {
+    filterObj["processor.type"] = {
+      $eq: processorType,
+    };
+  }
+
+  if (processorSpeed) {
+    filterObj["processor.speed"] = {
+      $eq: processorSpeed,
+    };
+  }
+
+  // filtering by weight
+  const weight = query?.weight;
+  if (weight) {
+    filterObj.weight = {
+      $eq: weight,
+    };
+  }
+
+  // filtering by discount
+  const discount = query?.discount;
+  if (discount) {
+    filterObj.discount = {
+      $eq: discount,
+    };
+  }
+
+  // filtering by rating
+  const rating = query?.rating;
+  if (rating) {
+    filterObj.rating = {
+      $eq: Number(rating),
+    };
+  }
+
+  const result = await Product.find(filterObj);
   return result;
 };
 
