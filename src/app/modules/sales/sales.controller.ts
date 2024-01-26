@@ -15,6 +15,19 @@ const salesProduct = catchAsync(async (req, res) => {
   });
 });
 
+// get sales history
+const salesHistory = catchAsync(async (req, res) => {
+  const result = await SalesServices.salesHistory(req.query);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Product sales history retrieved successfully",
+    data: result,
+  });
+});
+
 export const SalesController = {
   salesProduct,
+  salesHistory,
 };

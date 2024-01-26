@@ -53,6 +53,64 @@ const salesProductIntoDB = async (payload: ISales) => {
   }
 };
 
+// get sales history
+const salesHistory = async (query: Record<string, unknown>) => {
+  const historyType = query?.historyType;
+  // create pipeline array
+  const pipeline = [];
+
+  if (historyType === "weekly") {
+    pipeline.push({
+      $group: {
+        _id: {
+          $week: { $toDate: "$saleDate" },
+        },
+        sales: {
+          $push: "$$ROOT",
+        },
+      },
+    });
+  } else if (historyType === "daily") {
+    pipeline.push({
+      $group: {
+        _id: {
+          $dayOfMonth: { $toDate: "$saleDate" },
+        },
+        sales: {
+          $push: "$$ROOT",
+        },
+      },
+    });
+  } else if (historyType === "monthly") {
+    pipeline.push({
+      $group: {
+        _id: {
+          $month: { $toDate: "$saleDate" },
+        },
+        sales: {
+          $push: "$$ROOT",
+        },
+      },
+    });
+  } else {
+    pipeline.push({
+      $group: {
+        _id: {
+          $year: { $toDate: "$saleDate" },
+        },
+        sales: {
+          $push: "$$ROOT",
+        },
+      },
+    });
+  }
+
+  const result = await Sales.aggregate(pipeline);
+
+  return result;
+};
+
 export const SalesServices = {
   salesProductIntoDB,
+  salesHistory,
 };

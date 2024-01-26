@@ -12,4 +12,7 @@ router.post(
   SalesController.salesProduct,
 );
 
+// get sales history
+router.get("/", SalesController.salesHistory);
+
 export const SalesRoutes = router;
