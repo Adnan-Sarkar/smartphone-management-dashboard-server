@@ -1,4 +1,6 @@
+import httpStatus from "http-status";
 import config from "../../config";
+import AppError from "../../error/AppError";
 import { ILogin, IUser } from "./user.interface";
 import User from "./user.model";
 import bcrypt from "bcrypt";
@@ -29,14 +31,14 @@ const login = async (payload: ILogin) => {
   });
 
   if (!user) {
-    throw Error("No user found!");
+    throw new AppError(httpStatus.NOT_FOUND, "No user found!");
   }
 
   // compare password is correct or not
   const isPasswordValid = await bcrypt.compare(password, user?.password);
 
   if (!isPasswordValid) {
-    throw Error("Password is incorrect!");
+    throw new AppError(httpStatus.BAD_REQUEST, "Password is incorrect!");
   }
 
   // create JWT access token
