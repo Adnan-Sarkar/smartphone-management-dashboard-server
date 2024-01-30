@@ -76,12 +76,16 @@ const createProductValidationSchema = z.object({
     .refine((value) => value >= 0 && value <= 5, {
       message: "Rating must be between 0 and 5",
     }),
-  colors: z.array(
-    z.string({
-      invalid_type_error: "Colors must be an array of strings",
-      required_error: "Colors are required",
-    }),
-  ),
+  colors: z
+    .array(
+      z
+        .string({
+          invalid_type_error: "Colors must be an array of strings",
+          required_error: "Colors are required",
+        })
+        .optional(),
+    )
+    .optional(),
   chargingType: z.string({
     invalid_type_error: "Charging type must be a string",
     required_error: "Charging type is required",
@@ -94,10 +98,12 @@ const createProductValidationSchema = z.object({
     invalid_type_error: "Details must be a string",
     required_error: "Details are required",
   }),
-  discount: z.boolean({
-    invalid_type_error: "Discount must be a boolean",
-    required_error: "Discount information is required",
-  }),
+  discount: z
+    .boolean({
+      invalid_type_error: "Discount must be a boolean",
+      required_error: "Discount information is required",
+    })
+    .optional(),
   productImage: z
     .string({
       invalid_type_error: "Product image must be a string",

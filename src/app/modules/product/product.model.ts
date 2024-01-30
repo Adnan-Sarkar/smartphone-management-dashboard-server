@@ -93,7 +93,6 @@ const prodyctSchema = new Schema<IProduct>({
   },
   colors: {
     type: [String],
-    required: [true, "Product colors is required"],
   },
   chargingType: {
     type: String,

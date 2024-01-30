@@ -30,7 +30,7 @@ export interface IProduct {
     speed: string;
   };
   rating: number;
-  colors: string[];
+  colors?: string[];
   chargingType: string;
   weight: string;
   details: string;
