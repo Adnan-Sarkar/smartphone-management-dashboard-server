@@ -22,7 +22,9 @@ const auth = () => {
       config.jwt_access_token_secret as string,
     ) as JwtPayload;
 
-    console.log(decode);
+    if (!decode.email) {
+      throw new AppError(httpStatus.UNAUTHORIZED, "Token is expired!");
+    }
 
     return next();
   });
