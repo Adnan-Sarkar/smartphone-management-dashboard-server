@@ -148,7 +148,7 @@ const salesHistory = async (query: Record<string, unknown>) => {
       "_id.month": -1,
       "_id.day": -1,
       "_id.year": -1,
-    },
+    } as Record<string, 1 | -1>,
   });
 
   const result = await Sales.aggregate(pipeline);
