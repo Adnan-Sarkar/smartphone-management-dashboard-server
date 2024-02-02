@@ -59,12 +59,30 @@ const salesHistory = async (query: Record<string, unknown>) => {
   // create pipeline array
   const pipeline = [];
 
+  pipeline.push({
+    $lookup: {
+      from: "products",
+      localField: "productId",
+      foreignField: "_id",
+      as: "product",
+    },
+  });
+
+  pipeline.push({
+    $addFields: {
+      month: { $month: { $toDate: "$saleDate" } },
+      year: { $year: { $toDate: "$saleDate" } },
+    },
+  });
+
   if (historyType === "weekly") {
     pipeline.push({
       $group: {
         _id: {
-          $week: { $toDate: "$saleDate" },
+          week: { $week: { $toDate: "$saleDate" } },
+          year: "$year",
         },
+        totalSale: { $sum: 1 },
         sales: {
           $push: "$$ROOT",
         },
@@ -74,8 +92,11 @@ const salesHistory = async (query: Record<string, unknown>) => {
     pipeline.push({
       $group: {
         _id: {
-          $dayOfMonth: { $toDate: "$saleDate" },
+          day: { $dayOfMonth: { $toDate: "$saleDate" } },
+          month: "$month",
+          year: "$year",
         },
+        totalSale: { $sum: 1 },
         sales: {
           $push: "$$ROOT",
         },
@@ -85,25 +106,50 @@ const salesHistory = async (query: Record<string, unknown>) => {
     pipeline.push({
       $group: {
         _id: {
-          $month: { $toDate: "$saleDate" },
+          month: "$month",
+          year: "$year",
         },
+        totalSale: { $sum: 1 },
         sales: {
           $push: "$$ROOT",
         },
       },
     });
-  } else {
+  } else if (historyType === "yearly") {
     pipeline.push({
       $group: {
         _id: {
-          $year: { $toDate: "$saleDate" },
+          year: "$year",
         },
+        totalSale: { $sum: 1 },
         sales: {
           $push: "$$ROOT",
         },
       },
     });
   }
+
+  pipeline.push({
+    $project: {
+      totalSale: 1,
+      month: 1,
+      "sales.productId": 1,
+      "sales.quantity": 1,
+      "sales.buyerName": 1,
+      "sales.saleDate": 1,
+      "sales.product.name": 1,
+      "sales.product.productImage": 1,
+      "sales.product.price": 1,
+    },
+  });
+
+  pipeline.push({
+    $sort: {
+      "_id.month": -1,
+      "_id.day": -1,
+      "_id.year": -1,
+    },
+  });
 
   const result = await Sales.aggregate(pipeline);
 
