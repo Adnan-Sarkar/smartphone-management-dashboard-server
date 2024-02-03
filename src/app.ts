@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import cors from "cors";
 import globalRouter from "./app/router/router";
 import apiNotFound from "./app/middleware/apiNotFound";
@@ -8,10 +8,24 @@ const app = express();
 
 // middlewares
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  }),
+);
 
 // route
 app.use("/api/v1", globalRouter);
+
+app.get("/", (_req: Request, res: Response) => {
+  res.status(200).json({
+    success: true,
+    message: "Welcome to the smartphone managementdashboard backend API",
+    details: "For github repository, visit: ",
+    documentation: "For API documentation, visit: ",
+  });
+});
 
 // API route not found
 app.use("*", apiNotFound);
