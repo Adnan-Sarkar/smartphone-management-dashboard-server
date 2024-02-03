@@ -13,6 +13,15 @@ const getAllProductsFromDB = async (query: Record<string, unknown>) => {
   // filter object
   const filterObj: Record<string, unknown> = {};
 
+  // filtering by product name
+  const name = query?.name;
+  if (name) {
+    filterObj.name = {
+      $regex: name,
+      $options: "i",
+    };
+  }
+
   // filtering by price range
   const price = query?.price;
   if (price) {
@@ -37,7 +46,8 @@ const getAllProductsFromDB = async (query: Record<string, unknown>) => {
   const brand = query?.brand;
   if (brand) {
     filterObj.brand = {
-      $eq: brand,
+      $regex: brand,
+      $options: "i",
     };
   }
 
@@ -45,7 +55,8 @@ const getAllProductsFromDB = async (query: Record<string, unknown>) => {
   const model = query?.model;
   if (model) {
     filterObj.model = {
-      $eq: model,
+      $regex: model,
+      $options: "i",
     };
   }
 
@@ -154,6 +165,11 @@ const getAllProductsFromDB = async (query: Record<string, unknown>) => {
       $eq: Number(rating),
     };
   }
+
+  // get all products which have quantity > 0
+  filterObj.quantity = {
+    $gt: 0,
+  };
 
   const result = await Product.find(filterObj);
   return result;
