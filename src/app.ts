@@ -10,7 +10,10 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://smartphone-management-by-adnan-sarkar.netlify.app",
+    origin: [
+      "https://smartphone-management-by-adnan-sarkar.netlify.app",
+      "http://localhost:5173",
+    ],
     credentials: true,
   }),
 );
@@ -22,8 +25,12 @@ app.get("/", (_req: Request, res: Response) => {
   res.status(200).json({
     success: true,
     message: "Welcome to the smartphone managementdashboard backend API",
-    details: "For github repository, visit: ",
-    documentation: "For API documentation, visit: ",
+    clientSite:
+      "For frontend live, visit: https://smartphone-management-by-adnan-sarkar.netlify.app",
+    details:
+      "For github repository, visit: https://github.com/Porgramming-Hero-web-course/l2b2-full-stack-a5-server-side-Adnan-Sarkar",
+    documentation:
+      "For API documentation, visit: https://documenter.getpostman.com/view/15069256/2s9YywdeFS",
   });
 });
 
