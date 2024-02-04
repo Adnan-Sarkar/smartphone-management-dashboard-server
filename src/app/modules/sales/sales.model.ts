@@ -4,10 +4,19 @@ import { ISales } from "./sales.interface";
 // create sales schema
 const salesSchema = new Schema<ISales>(
   {
-    productId: {
-      type: Schema.Types.ObjectId,
-      ref: "Product",
-      required: [true, "Product id is required"],
+    productName: {
+      type: String,
+      required: [true, "Product name is required"],
+      trim: true,
+    },
+    productImage: {
+      type: String,
+      required: [true, "Product image is required"],
+      trim: true,
+    },
+    productPrice: {
+      type: Number,
+      required: [true, "Product price is required"],
     },
     quantity: {
       type: Number,
