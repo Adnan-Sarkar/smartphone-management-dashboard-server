@@ -6,7 +6,9 @@ import Sales from "./sales.model";
 // sale a product
 const salesProductIntoDB = async (payload: ISales) => {
   // check product ID is valid or not
-  const product = await Product.findById(payload.productId).select("quantity");
+  const product = await Product.findById(payload.productId).select(
+    "quantity name productImage price",
+  );
 
   if (!product) {
     throw new Error("Invalid product id!");
@@ -20,11 +22,21 @@ const salesProductIntoDB = async (payload: ISales) => {
     throw new Error("Product quantity is not sufficient!");
   }
 
+  // set product name and image, so that if the product will delete then sale info can be consistent
+  const saleProductInfo = {
+    productName: product.name,
+    productImage: product.productImage,
+    productPrice: product.price,
+    quantity: payload.quantity,
+    buyerName: payload.buyerName,
+    saleDate: payload.saleDate,
+  };
+
   // start session
   const session = await mongoose.startSession();
   session.startTransaction();
   try {
-    const result = await Sales.create([payload], { session });
+    const result = await Sales.create([saleProductInfo], { session });
 
     if (!result[0]) {
       throw new Error("Sales product is not successfull!");
@@ -58,15 +70,6 @@ const salesHistory = async (query: Record<string, unknown>) => {
   const historyType = query?.historyType;
   // create pipeline array
   const pipeline = [];
-
-  pipeline.push({
-    $lookup: {
-      from: "products",
-      localField: "productId",
-      foreignField: "_id",
-      as: "product",
-    },
-  });
 
   pipeline.push({
     $addFields: {
@@ -137,9 +140,9 @@ const salesHistory = async (query: Record<string, unknown>) => {
       "sales.quantity": 1,
       "sales.buyerName": 1,
       "sales.saleDate": 1,
-      "sales.product.name": 1,
-      "sales.product.productImage": 1,
-      "sales.product.price": 1,
+      "sales.productName": 1,
+      "sales.productImage": 1,
+      "sales.productPrice": 1,
     },
   });
 
@@ -147,6 +150,7 @@ const salesHistory = async (query: Record<string, unknown>) => {
     $sort: {
       "_id.month": -1,
       "_id.day": -1,
+      "_id.week": -1,
       "_id.year": -1,
     } as Record<string, 1 | -1>,
   });
