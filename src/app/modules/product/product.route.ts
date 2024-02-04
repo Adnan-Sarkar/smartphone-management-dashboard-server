@@ -14,6 +14,9 @@ router.post(
   ProductController.createProduct,
 );
 
+// get all products include stock out
+router.get("/all-products", auth(), ProductController.getAllProducts);
+
 // get single product by id
 router.get("/:productId", auth(), ProductController.getSingleProduct);
 
@@ -31,7 +34,7 @@ router.patch(
 // delete multiple products
 router.delete("/", auth(), ProductController.deleteMultipleProducts);
 
-// get all products
-router.get("/", auth(), ProductController.getAllProducts);
+// get all stock products
+router.get("/", auth(), ProductController.getAllStockProducts);
 
 export const ProductRoutes = router;

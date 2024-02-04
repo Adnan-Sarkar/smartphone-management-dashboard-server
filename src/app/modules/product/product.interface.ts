@@ -1,3 +1,17 @@
+type TStorage =
+  | "2GB"
+  | "4GB"
+  | "6GB"
+  | "8GB"
+  | "12GB"
+  | "16GB"
+  | "32GB"
+  | "64GB"
+  | "128GB"
+  | "256GB"
+  | "512GB"
+  | "1TB";
+
 export interface IProduct {
   name: string;
   price: number;
@@ -7,17 +21,8 @@ export interface IProduct {
   model: string;
   operatingSystem: "iOS" | "Android";
   storage: {
-    ROM:
-      | "2GB"
-      | "4GB"
-      | "8GB"
-      | "16GB"
-      | "32GB"
-      | "64GB"
-      | "128GB"
-      | "256GB"
-      | "1TB";
-    RAM: "2GB" | "4GB" | "8GB" | "16GB" | "32GB" | "64GB" | "128GB" | "256GB";
+    ROM: TStorage;
+    RAM: TStorage;
   };
   screenSize: string;
   battery: string;

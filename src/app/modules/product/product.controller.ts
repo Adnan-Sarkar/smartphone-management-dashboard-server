@@ -15,9 +15,21 @@ const createProduct = catchAsync(async (req, res) => {
   });
 });
 
-// get all products
-const getAllProducts = catchAsync(async (req, res) => {
-  const result = await ProductServices.getAllProductsFromDB(req.query);
+// get all products include stock out
+const getAllProducts = catchAsync(async (_req, res) => {
+  const result = await ProductServices.getAllProducts();
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Products retrieved successfully",
+    data: result,
+  });
+});
+
+// get all stock products
+const getAllStockProducts = catchAsync(async (req, res) => {
+  const result = await ProductServices.getAllStockProductsFromDB(req.query);
 
   sendResponse(res, {
     success: true,
@@ -87,6 +99,7 @@ const updateSingleProduct = catchAsync(async (req, res) => {
 export const ProductController = {
   createProduct,
   getAllProducts,
+  getAllStockProducts,
   getSingleProduct,
   deleteSingleProduct,
   deleteMultipleProducts,

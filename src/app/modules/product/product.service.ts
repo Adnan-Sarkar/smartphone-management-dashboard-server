@@ -8,8 +8,17 @@ const createProductIntoDB = async (payload: IProduct) => {
   return result;
 };
 
-// get all products
-const getAllProductsFromDB = async (query: Record<string, unknown>) => {
+// get all products include stock out
+const getAllProducts = async () => {
+  const result = await Product.find().select(
+    "productImage name quantity price releaseDate brand",
+  );
+
+  return result;
+};
+
+// get all stock products
+const getAllStockProductsFromDB = async (query: Record<string, unknown>) => {
   // filter object
   const filterObj: Record<string, unknown> = {};
 
@@ -329,7 +338,8 @@ const updateSingleProductIntoDB = async (
 
 export const ProductServices = {
   createProductIntoDB,
-  getAllProductsFromDB,
+  getAllProducts,
+  getAllStockProductsFromDB,
   getSingleProductFromDB,
   deleteSingleProductFromDB,
   deleteMultipleProductsFromDB,
