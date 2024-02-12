@@ -10,6 +10,7 @@ const globalErrorHandle: ErrorRequestHandler = (error, _req, res, _next) => {
   const errorResponse: IError = {
     success: false,
     message: "",
+    errorDetails: "",
   };
 
   let statusCode = Number(httpStatus.NOT_FOUND);
