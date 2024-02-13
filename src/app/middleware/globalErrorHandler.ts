@@ -4,10 +4,11 @@ import { IError } from "../interface/error";
 import { ZodError } from "zod";
 import httpStatus from "http-status";
 import AppError from "../error/AppError";
+import handleZodError from "../error/handleZodError";
 
 // eslint-disable-next-line no-unused-vars
 const globalErrorHandle: ErrorRequestHandler = (error, _req, res, _next) => {
-  const errorResponse: IError = {
+  let errorResponse: IError = {
     success: false,
     message: "",
     errorDetails: "",
@@ -16,7 +17,7 @@ const globalErrorHandle: ErrorRequestHandler = (error, _req, res, _next) => {
   let statusCode = Number(httpStatus.NOT_FOUND);
 
   if (error instanceof ZodError) {
-    errorResponse.message = "Validation Error";
+    errorResponse = handleZodError(error);
     statusCode = Number(httpStatus.BAD_REQUEST);
   } else if (error?.name === "CastError") {
     errorResponse.message = "Invalid ID";
