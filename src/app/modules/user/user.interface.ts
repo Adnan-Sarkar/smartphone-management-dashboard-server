@@ -1,7 +1,9 @@
+export type TUserRoles = "super-admin" | "branch-manager" | "seller";
+
 export interface IUser {
   fullName: string;
   userName: string;
-  role: "super-admin" | "branch-manager" | "seller";
+  role: TUserRoles;
   email: string;
   password: string;
   phone: string;
