@@ -21,6 +21,7 @@ const globalErrorHandle: ErrorRequestHandler = (error, _req, res, _next) => {
     statusCode = Number(httpStatus.BAD_REQUEST);
   } else if (error?.name === "CastError") {
     errorResponse.message = "Invalid ID";
+    errorResponse.errorDetails = `${error?.value} is not a valid ID!`;
     statusCode = Number(httpStatus.NOT_FOUND);
   } else if (error?.code === 11000) {
     errorResponse.message = "Duplicate Entry";
