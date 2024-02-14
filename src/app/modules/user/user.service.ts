@@ -8,14 +8,6 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 
 // create an user
 const createUser = async (payload: IUser) => {
-  // hashing password
-  const hashedPassword = await bcrypt.hash(
-    payload.password,
-    Number(config.salt_rounds),
-  );
-
-  payload.password = hashedPassword;
-
   const result = await User.create(payload);
 
   return result;
@@ -45,6 +37,7 @@ const login = async (payload: ILogin) => {
   const jwtPayload: JwtPayload = {
     email: user?.email,
     userName: user?.userName,
+    role: user?.role,
   };
 
   const token = jwt.sign(jwtPayload, config.jwt_access_token_secret as string, {
