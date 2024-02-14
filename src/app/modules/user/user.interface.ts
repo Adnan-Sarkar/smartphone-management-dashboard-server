@@ -1,6 +1,7 @@
 export interface IUser {
   fullName: string;
   userName: string;
+  role: "super-admin" | "branch-manager" | "seller";
   email: string;
   password: string;
   phone: string;

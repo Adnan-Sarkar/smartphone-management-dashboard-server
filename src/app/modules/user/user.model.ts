@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 import { IUser } from "./user.interface";
-import { Gender } from "./user.constant";
+import { Gender, UserRoles } from "./user.constant";
 
 // create user schema
 const userSchema = new Schema<IUser>(
@@ -14,6 +14,11 @@ const userSchema = new Schema<IUser>(
       type: String,
       required: [true, "Username is required"],
       trim: true,
+    },
+    role: {
+      type: String,
+      enum: UserRoles,
+      required: [true, "User role is required"],
     },
     email: {
       type: String,

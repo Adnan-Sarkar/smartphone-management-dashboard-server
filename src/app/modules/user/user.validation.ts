@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Gender } from "./user.constant";
+import { Gender, UserRoles } from "./user.constant";
 
 const createUserValidationSchema = z.object({
   fullName: z.string({
@@ -10,6 +10,7 @@ const createUserValidationSchema = z.object({
     invalid_type_error: "userName must be string",
     required_error: "userName is required",
   }),
+  role: z.enum(UserRoles as [string, ...string[]]),
   email: z.string({
     invalid_type_error: "Email must be string",
     required_error: "Email is required",
