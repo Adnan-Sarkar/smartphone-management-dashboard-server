@@ -3,8 +3,9 @@ import AppError from "../error/AppError";
 import catchAsync from "../utils/catchAsync";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import config from "../config";
+import { TUserRoles } from "../modules/user/user.interface";
 
-const auth = () => {
+const auth = (...allowedUserRoles: TUserRoles[]) => {
   return catchAsync(async (req, _res, next) => {
     // check token is available or not
     const token = req.headers.authorization;
@@ -24,6 +25,10 @@ const auth = () => {
 
     if (!decode.email) {
       throw new AppError(httpStatus.UNAUTHORIZED, "Token is expired!");
+    }
+
+    if (!allowedUserRoles.includes(decode?.role)) {
+      throw new AppError(httpStatus.UNAUTHORIZED, "You are not authorized!");
     }
 
     return next();

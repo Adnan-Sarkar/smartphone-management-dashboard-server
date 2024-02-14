@@ -9,12 +9,12 @@ const router = expres.Router();
 // sales product
 router.post(
   "/sell",
-  auth(),
+  auth("super-admin", "seller"),
   validateRequest(SalesValidations.createSalesValidationSchema),
   SalesController.salesProduct,
 );
 
 // get sales history
-router.get("/", auth(), SalesController.salesHistory);
+router.get("/", auth("super-admin"), SalesController.salesHistory);
 
 export const SalesRoutes = router;
