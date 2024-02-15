@@ -13,6 +13,15 @@ const createUser = async (payload: IUser) => {
   return result;
 };
 
+// get all users except super admin
+const getAllUsersFromDB = async () => {
+  const result = await User.find({
+    role: { $ne: "super-admin" },
+  });
+
+  return result;
+};
+
 // login user
 const login = async (payload: ILogin) => {
   const { email, password } = payload;
@@ -52,5 +61,6 @@ const login = async (payload: ILogin) => {
 
 export const UserServices = {
   createUser,
+  getAllUsersFromDB,
   login,
 };

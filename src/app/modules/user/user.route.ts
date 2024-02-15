@@ -19,4 +19,7 @@ router.post(
   userController.login,
 );
 
+// get all users except super admin
+router.get("/users", userController.getAllUsers);
+
 export const UserRoutes = router;

@@ -15,6 +15,18 @@ const createUser = catchAsync(async (req, res) => {
   });
 });
 
+// get all users except super admin
+const getAllUsers = catchAsync(async (req, res) => {
+  const result = await UserServices.getAllUsersFromDB();
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Users retrieved successfully",
+    data: result,
+  });
+});
+
 // login user
 const login = catchAsync(async (req, res) => {
   const result = await UserServices.login(req.body);
@@ -29,5 +41,6 @@ const login = catchAsync(async (req, res) => {
 
 export const userController = {
   createUser,
+  getAllUsers,
   login,
 };
