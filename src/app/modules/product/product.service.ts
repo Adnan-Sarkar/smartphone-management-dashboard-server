@@ -10,9 +10,7 @@ const createProductIntoDB = async (payload: IProduct) => {
 
 // get all products include stock out
 const getAllProducts = async () => {
-  const result = await Product.find().select(
-    "productImage name quantity price releaseDate brand",
-  );
+  const result = await Product.find();
 
   return result;
 };

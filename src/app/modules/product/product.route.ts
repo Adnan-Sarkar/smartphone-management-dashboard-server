@@ -17,7 +17,7 @@ router.post(
 // get all products include stock out
 router.get(
   "/all-products",
-  auth("super-admin", "branch-manager", "seller"),
+  auth("super-admin", "branch-manager"),
   ProductController.getAllProducts,
 );
 
@@ -38,7 +38,7 @@ router.delete(
 // update single product by id
 router.patch(
   "/:productId",
-  auth("super-admin", "branch-manager", "branch-manager"),
+  auth("super-admin", "branch-manager"),
   validateRequest(ProductValidations.updateProductValidationSchema),
   ProductController.updateSingleProduct,
 );
@@ -51,6 +51,10 @@ router.delete(
 );
 
 // get all stock products
-router.get("/", auth("super-admin"), ProductController.getAllStockProducts);
+router.get(
+  "/",
+  auth("super-admin", "branch-manager", "seller"),
+  ProductController.getAllStockProducts,
+);
 
 export const ProductRoutes = router;
