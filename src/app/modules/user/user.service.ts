@@ -22,6 +22,61 @@ const getAllUsersFromDB = async () => {
   return result;
 };
 
+// delete user
+const deleteUserFromDB = async (id: string) => {
+  await User.findByIdAndDelete(id);
+
+  return null;
+};
+
+// update user
+const updateUserIntoDB = async (id: string, payload: Partial<IUser>) => {
+  const { fullName, userName, role, email, phone, gender, age, profileImage } =
+    payload;
+
+  const updatedInfo: Record<string, unknown> = {};
+
+  if (fullName) {
+    updatedInfo.fullName = fullName;
+  }
+
+  if (userName) {
+    updatedInfo.userName = userName;
+  }
+
+  if (role) {
+    updatedInfo.role = role;
+  }
+
+  if (email) {
+    updatedInfo.email = email;
+  }
+
+  if (phone) {
+    updatedInfo.phone = phone;
+  }
+
+  if (gender) {
+    updatedInfo.gender = gender;
+  }
+
+  if (age) {
+    updatedInfo.age = age;
+  }
+
+  if (profileImage) {
+    updatedInfo.profileImage = profileImage;
+  }
+
+  // update the productinfo
+  const result = await User.findByIdAndUpdate(id, updatedInfo, {
+    new: true,
+    runValidators: true,
+  });
+
+  return result;
+};
+
 // login user
 const login = async (payload: ILogin) => {
   const { email, password } = payload;
@@ -62,5 +117,7 @@ const login = async (payload: ILogin) => {
 export const UserServices = {
   createUser,
   getAllUsersFromDB,
+  deleteUserFromDB,
+  updateUserIntoDB,
   login,
 };
