@@ -17,14 +17,14 @@ router.post(
 // get all products include stock out
 router.get(
   "/all-products",
-  auth("super-admin"),
+  auth("super-admin", "branch-manager", "seller"),
   ProductController.getAllProducts,
 );
 
 // get single product by id
 router.get(
   "/:productId",
-  auth("super-admin"),
+  auth("super-admin", "branch-manager", "seller"),
   ProductController.getSingleProduct,
 );
 
@@ -38,7 +38,7 @@ router.delete(
 // update single product by id
 router.patch(
   "/:productId",
-  auth("super-admin", "branch-manager"),
+  auth("super-admin", "branch-manager", "branch-manager"),
   validateRequest(ProductValidations.updateProductValidationSchema),
   ProductController.updateSingleProduct,
 );
